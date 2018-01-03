@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CmVisualizer.Models;
 using System.ComponentModel;
+using CmVisualizer.ViewModels;
 
 namespace CmVisualizer.Controllers
 {
@@ -17,6 +18,12 @@ namespace CmVisualizer.Controllers
             ProjectMetrics pm = (ProjectMetrics)TypeDescriptor.GetConverter(typeof(ProjectMetrics)).ConvertFrom("30 solid");
 
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult CalculateResult(SourceInfoViewModel model)
+        {
+            return RedirectToAction("About");
         }
 
         public IActionResult About()

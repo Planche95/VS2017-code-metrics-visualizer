@@ -1,6 +1,4 @@
 ﻿html, body {
-    /*padding-top: 50px;
-    padding-bottom: 20px;*/
     height: 100%
 }
 
@@ -11,8 +9,8 @@ input{
 }
 
 .col {
-    padding-right: 0px;
-    padding-left: 0px;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 .btn-xxl {
@@ -39,17 +37,6 @@ input{
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-}
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
 }
 
 /* QR code generator */
