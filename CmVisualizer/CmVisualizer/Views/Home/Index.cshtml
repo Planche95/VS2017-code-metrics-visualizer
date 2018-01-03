@@ -17,7 +17,7 @@
             <button type="button" class="btn btn-primary rounded-circle btn-xxl btn-file" data-toggle="tooltip" title="Hooray!"><i class="fa fa-plus"></i></button>
             <button type="button" class="btn btn-primary rounded-circle btn-xl" data-toggle="modal" data-target="#myModal"><i class="fa fa-cog"></i></button>
             <form id="project-form" asp-action="CalculateResult" enctype="multipart/form-data">
-                <input type="file" class="btn-input-file" accept=".xlsx" hidden>
+                <input type="file" asp-for="ExcelMetrics" class="btn-input-file" accept=".xlsx" hidden>
             </form>
         </div>
     </div>

@@ -7,22 +7,38 @@ using Microsoft.AspNetCore.Mvc;
 using CmVisualizer.Models;
 using System.ComponentModel;
 using CmVisualizer.ViewModels;
+using Microsoft.AspNetCore.Http;
+using System.Text;
+using System.IO;
+using NPOI.SS.UserModel;
+using NPOI.HSSF.UserModel;
+using NPOI.XSSF.UserModel;
+using Microsoft.AspNetCore.Hosting;
 
 namespace CmVisualizer.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public HomeController(IHostingEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
         public IActionResult Index()
         {
-            //Daj to do konstruktora
-            ProjectMetrics pm = (ProjectMetrics)TypeDescriptor.GetConverter(typeof(ProjectMetrics)).ConvertFrom("30 solid");
-
             return View();
         }
 
         [HttpPost]
         public IActionResult CalculateResult(SourceInfoViewModel model)
         {
+
+            SolutionMetrics solutionMetrics = new SolutionMetricsBuilder()
+                                                    .From(model.ExcelMetrics)
+                                                    .Build();
+
             return RedirectToAction("About");
         }
 

@@ -7,6 +7,12 @@ namespace CmVisualizer.Models
 {
     public class NamespaceMetrics : MetricsData
     {
-        private List<ClassMetrics> FunctionsMetrics = new List<ClassMetrics>();
+        private List<ClassMetrics> classesMetrics = new List<ClassMetrics>();
+
+        public List<ClassMetrics> ClassesMetrics
+        {
+            get { return classesMetrics; }
+            set { classesMetrics = value; }
+        }
     }
 }

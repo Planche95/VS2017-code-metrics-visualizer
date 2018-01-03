@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace CmVisualizer.Models
 {
-    [TypeConverter(typeof(ProjectMetricsConverter))]
     public class ProjectMetrics : MetricsData
     {
-        private List<NamespaceMetrics> FunctionsMetrics = new List<NamespaceMetrics>();
+        private List<NamespaceMetrics> namespacesMetrics = new List<NamespaceMetrics>();
 
-        public string test;
+        public List<NamespaceMetrics> NamespacesMetrics
+        {
+            get { return namespacesMetrics; }
+            set { namespacesMetrics = value; }
+        }
     }
 }
