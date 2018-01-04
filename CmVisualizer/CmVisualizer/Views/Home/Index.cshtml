@@ -15,7 +15,7 @@
     <div class="d-flex justify-content-center">
         <div class="container">
             <button type="button" class="btn btn-primary rounded-circle btn-xxl btn-file" data-toggle="tooltip" title="Hooray!"><i class="fa fa-plus"></i></button>
-            <button type="button" class="btn btn-primary rounded-circle btn-xl" data-toggle="modal" data-target="#myModal"><i class="fa fa-cog"></i></button>
+            <button id="btn-settings" type="button" class="btn btn-primary rounded-circle btn-xl" data-toggle="modal" data-target="#myModal"><i class="fa fa-cog"></i></button>
             <form id="project-form" asp-action="CalculateResult" enctype="multipart/form-data">
                 <input type="file" asp-for="ExcelMetrics" class="btn-input-file" accept=".xlsx" hidden>
             </form>
@@ -36,7 +36,7 @@
 
                 <ul class="nav nav-tabs nav-justified">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="pill" href="#">Project</a>
+                        <a id="nav-project" class="nav-link active" data-toggle="pill" href="#">Project</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="pill" href="#">Namespace</a>
@@ -53,7 +53,7 @@
                 <div class="modal-body">
                     <div class="modal-block">
                         <h5 class="modal-title">Maintability</h5>
-                        <div class="progress">
+                        <div id="maintability" class="progress">
                             <div class="progress-bar bg-danger" style="width:33.33%">
                                 Bad
                             </div>
@@ -68,10 +68,10 @@
                             <div class="row">
                                 <div class="col"><b>0</b></div>
                                 <div class="col">
-                                    <input type="text" value="0">
+                                    <input id="data1" type="text" value="0">
                                 </div>
                                 <div class="col">
-                                    <input type="text" value="0">
+                                    <input id="data2" type="text" value="0">
                                 </div>
                                 <b @*style="font-size:10px;"*@>100</b>
                             </div>
@@ -80,7 +80,7 @@
 
                     <div class="modal-block">
                         <h5 class="modal-title">Cyclomanic</h5>
-                        <div class="progress">
+                        <div id="cyclomanic" class="progress">
                             <div class="progress-bar bg-success" style="width:33.33%">
                                 Good
                             </div>
@@ -95,10 +95,10 @@
                             <div class="row">
                                 <div class="col"><b>0</b></div>
                                 <div class="col">
-                                    <input type="text" value="0">
+                                    <input id="data3" type="text" value="0">
                                 </div>
                                 <div class="col">
-                                    <input type="text" value="0">
+                                    <input id="data4" type="text" value="0">
                                 </div>
                                 <b>∞</b>
                             </div>
@@ -107,7 +107,7 @@
 
                     <div class="modal-block">
                         <h5 class="modal-title">Deph of inheritance</h5>
-                        <div class="progress">
+                        <div id="deph-of-inheritance" class="progress">
                             <div class="progress-bar bg-success" style="width:33.33%">
                                 Good
                             </div>
@@ -122,10 +122,10 @@
                             <div class="row">
                                 <div class="col"><b>0</b></div>
                                 <div class="col">
-                                    <input type="text" value="0">
+                                    <input id="data5" type="text" value="0">
                                 </div>
                                 <div class="col">
-                                    <input type="text" value="0">
+                                    <input id="data6" type="text" value="0">
                                 </div>
                                 <b>∞</b>
                             </div>
@@ -134,7 +134,7 @@
 
                     <div class="modal-block">
                         <h5 class="modal-title">Lines od code</h5>
-                        <div class="progress">
+                        <div id="lines-od-code" class="progress">
                             <div class="progress-bar bg-success" style="width:33.33%">
                                 Good
                             </div>
@@ -149,10 +149,10 @@
                             <div class="row">
                                 <div class="col"><b>0</b></div>
                                 <div class="col">
-                                    <input type="text" value="0">
+                                    <input id="data7" type="text" value="0">
                                 </div>
                                 <div class="col">
-                                    <input type="text" value="0">
+                                    <input id="data8" type="text" value="0">
                                 </div>
                                 <b>∞</b>
                             </div>
@@ -162,7 +162,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button id="save-setting" type="button" class="btn btn-primary">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
 
@@ -179,11 +179,60 @@
         $(document).ready(function () {
             $(".btn-file").click(function () {
                 $(".btn-input-file").trigger('click');
-            }
-            );
+            });
+
+            $("#btn-settings").click(function () {
+                $("#nav-project").trigger('click');
+            });
 
             $(".btn-input-file").change(function () {
                 $('#project-form').submit();
+            });
+
+            $("#save-setting").click(function () {
+
+                var Ugly =
+                    {
+                        Values: [$("#data1").val(), $("#data2").val(), $("#data3").val(),
+                        $("#data4").val(), $("#data5").val(), $("#data6").val(),
+                        $("#data7").val(), $("#data8").val()]
+                    };
+
+                $.ajax({
+                    url: '/Home/SaveSetting/',
+                    type: "POST",
+                    dataType: "json",
+                    data: Ugly,
+                    success: function (response) {
+                        
+                    }
+                });
+                
+            });
+
+            $(".nav-link").click(function () {
+
+                var Ugly =
+                    {
+                        Name: $(this).text()
+                    };
+
+                $.ajax({
+                    url: '/Home/ChangeSetting/',
+                    type: "POST",
+                    dataType: "json",
+                    data: Ugly,
+                    success: function (response) {
+                        $("#data1").val(response.success[0]);
+                        $("#data2").val(response.success[1]);
+                        $("#data3").val(response.success[2]);
+                        $("#data4").val(response.success[3]);
+                        $("#data5").val(response.success[4]);
+                        $("#data6").val(response.success[5]);
+                        $("#data7").val(response.success[6]);
+                        $("#data8").val(response.success[7]);
+                    }
+                });
             });
         });
 </script>
