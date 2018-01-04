@@ -1,0 +1,16 @@
+﻿@model ResultViewModel
+
+@{
+    ViewData["Title"] = "Result";
+}
+
+<div id="accordion">
+
+    @await Html.PartialAsync("_ResultCardPartial", Model.solutionResult)
+    @await Html.PartialAsync("_ResultCardPartial", Model.projectsResult)
+    @await Html.PartialAsync("_ResultCardPartial", Model.namespacesResult)
+    @await Html.PartialAsync("_ResultCardPartial", Model.classessResult)
+    @await Html.PartialAsync("_ResultCardPartial", Model.functionsResult)
+
+</div>
+

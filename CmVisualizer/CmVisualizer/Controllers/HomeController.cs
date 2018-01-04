@@ -42,18 +42,9 @@ namespace CmVisualizer.Controllers
             return RedirectToAction("About");
         }
 
-        public IActionResult About()
+        public IActionResult Result()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            return View(new ResultViewModel());
         }
 
         public IActionResult Error()

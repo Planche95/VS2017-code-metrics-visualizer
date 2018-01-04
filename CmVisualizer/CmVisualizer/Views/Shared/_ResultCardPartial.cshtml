@@ -1,0 +1,48 @@
+﻿@model SingleResultViewModel
+
+<div class="card">
+    <div class="card-header">
+        <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#accordionCard_@Model.name.Replace(" ", "_")">
+            <div class="container">
+                <div class="row">
+                    <div class="col-1">
+                        @Model.name
+                    </div>
+                    <div class="col-11">
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" style="width:33.33%">
+                                Bad
+                            </div>
+                            <div class="progress-bar bg-warning" style="width:33.33%">
+                                Mid
+                            </div>
+                            <div class="progress-bar bg-success" style="width:33.33%">
+                                Good
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div id="accordionCard_@Model.name.Replace(" ", "_")" class="collapse show">
+        <div class="card-body">
+            Nr of classes:
+            
+            <div id="accordion_@Model.name.Replace(" ", "_")">
+                @await Html.PartialAsync("_ResultMetricsCardPartial", Model.maintainability,
+                    new ViewDataDictionary(this.ViewData) { { "name", "accordion_" + Model.name.Replace(" ", "_") },
+                                                            { "header", "Maintability" } })
+                @await Html.PartialAsync("_ResultMetricsCardPartial", Model.cyclomaticComplexity,
+                    new ViewDataDictionary(this.ViewData) { { "name", "accordion_" + Model.name.Replace(" ", "_") },
+                                                            { "header", "Cyclomatic complexity" } })
+                @await Html.PartialAsync("_ResultMetricsCardPartial", Model.dephOfInheritance,
+                    new ViewDataDictionary(this.ViewData) { { "name", "accordion_" + Model.name.Replace(" ", "_") },
+                                                            { "header", "Deph of inheritance" } })
+                @await Html.PartialAsync("_ResultMetricsCardPartial", Model.linesOfCode,
+                    new ViewDataDictionary(this.ViewData) { { "name", "accordion_" + Model.name.Replace(" ", "_") },
+                                                            { "header", "Lines of code" } })
+            </div>
+        </div>
+    </div>
+</div>

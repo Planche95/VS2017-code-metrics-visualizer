@@ -1,0 +1,33 @@
+﻿@model Dictionary<string, double> 
+
+<div class="card">
+    <div class="card-header">
+        <a class="card-link" data-toggle="collapse" data-parent="#@ViewData["name"]" href="#@ViewData["name"]@ViewData["header"].ToString().Replace(" ", "_")">
+            <div class="container">
+                <div class="row">
+                    <div class="col-1">
+                        @ViewData["header"]
+                    </div>
+                    <div class="col-11">
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" style="width:@Model["bad"].ToString().Replace(",", ".")%">
+                                Bad
+                            </div>
+                            <div class="progress-bar bg-warning" style="width:@Model["mid"].ToString().Replace(",", ".")%">
+                                Mid
+                            </div>
+                            <div class="progress-bar bg-success" style="width:@Model["good"].ToString().Replace(",", ".")%">
+                                Good
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div id="@ViewData["name"]@ViewData["header"].ToString().Replace(" ", "_")" class="collapse show">
+        <div class="card-body">
+            Lorem ipsum..
+        </div>
+    </div>
+</div>
