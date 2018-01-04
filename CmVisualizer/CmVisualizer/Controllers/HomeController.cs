@@ -21,16 +21,6 @@ namespace CmVisualizer.Controllers
     {
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        //public Dictionary<string, int[]> data = new Dictionary<string, int[]>()
-        //{
-        //    { "Project", new int[]{ 1, 2, 3, 4, 5, 6, 7, 8 } },
-        //    { "Namespace", new int[]{ 9, 10, 11, 12, 13, 14, 15, 16 } },
-        //    { "Class", new int[]{ 17, 18, 19, 20, 21, 22, 23, 24 } },
-        //    { "Function", new int[]{ 25, 26, 27, 28, 29, 30, 31, 32 } }
-        //};
-
-        //private string currentTab = "Project";
-
         public HomeController(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
@@ -49,14 +39,85 @@ namespace CmVisualizer.Controllers
         }
 
         [HttpPost]
-        public IActionResult CalculateResult(SourceInfoViewModel model)
+        public IActionResult Result(SourceInfoViewModel model)
         {
 
             SolutionMetrics solutionMetrics = new SolutionMetricsBuilder()
                                                     .From(model.ExcelMetrics)
                                                     .Build();
 
-            return RedirectToAction("About");
+            int[] settingsProject = (int[])TempData.Peek("Project");
+            int[] settingsNamespace = (int[])TempData.Peek("Namespace");
+            int[] settingsClass = (int[])TempData.Peek("Class");
+            int[] settingsFunction = (int[])TempData.Peek("Function");
+
+            ResultViewModel result = new ResultViewModel();
+            float all, bad, mid, good;
+
+            result.solutionResult = new SingleResultViewModel() { name = "Solution" };
+            result.projectsResult = new SingleResultViewModel() { name = "Projects" };
+            result.namespacesResult = new SingleResultViewModel() { name = "Namespaces" };
+            result.classessResult = new SingleResultViewModel() { name = "Classes" };
+            result.functionsResult = new SingleResultViewModel() { name = "Functions" };
+
+            all = solutionMetrics.ProjectsMetrics.Count();
+            bad = solutionMetrics.ProjectsMetrics
+                .Where(pm => pm.Maintability < settingsProject[0])
+                .Count();
+            mid = solutionMetrics.ProjectsMetrics
+                .Where(pm => settingsProject[0] <= pm.Maintability && settingsProject[1] > pm.Maintability)
+                .Count();
+            good = solutionMetrics.ProjectsMetrics
+                .Where(pm => settingsProject[1] <= pm.Maintability)
+                .Count();
+
+            result.projectsResult.maintainability["bad"] = (bad / all) * 100;
+            result.projectsResult.maintainability["mid"] = (mid / all) * 100;
+            result.projectsResult.maintainability["good"] = (good / all) * 100;
+
+            good = solutionMetrics.ProjectsMetrics
+                .Where(pm => pm.Cyclomanic < settingsProject[2])
+                .Count();
+            mid = solutionMetrics.ProjectsMetrics
+                .Where(pm => settingsProject[2] <= pm.Cyclomanic && settingsProject[3] > pm.Cyclomanic)
+                .Count();
+            bad = solutionMetrics.ProjectsMetrics
+                .Where(pm => settingsProject[3] <= pm.Cyclomanic)
+                .Count();
+
+            result.projectsResult.cyclomaticComplexity["bad"] = (bad / all) * 100;
+            result.projectsResult.cyclomaticComplexity["mid"] = (mid / all) * 100;
+            result.projectsResult.cyclomaticComplexity["good"] = (good / all) * 100;
+
+            good = solutionMetrics.ProjectsMetrics
+                .Where(pm => pm.DephOfInheritance < settingsProject[4])
+                .Count();
+            mid = solutionMetrics.ProjectsMetrics
+                .Where(pm => settingsProject[4] <= pm.DephOfInheritance && settingsProject[5] > pm.DephOfInheritance)
+                .Count();
+            bad = solutionMetrics.ProjectsMetrics
+                .Where(pm => settingsProject[5] <= pm.DephOfInheritance)
+                .Count();
+
+            result.projectsResult.dephOfInheritance["bad"] = (bad / all) * 100;
+            result.projectsResult.dephOfInheritance["mid"] = (mid / all) * 100;
+            result.projectsResult.dephOfInheritance["good"] = (good / all) * 100;
+
+            good = solutionMetrics.ProjectsMetrics
+                .Where(pm => pm.LinesOfCode < settingsProject[6])
+                .Count();
+            mid = solutionMetrics.ProjectsMetrics
+                .Where(pm => settingsProject[6] <= pm.LinesOfCode && settingsProject[7] > pm.LinesOfCode)
+                .Count();
+            bad = solutionMetrics.ProjectsMetrics
+                .Where(pm => settingsProject[7] <= pm.LinesOfCode)
+                .Count();
+
+            result.projectsResult.linesOfCode["bad"] = (bad / all) * 100; ;
+            result.projectsResult.linesOfCode["mid"] = (mid / all) * 100; ;
+            result.projectsResult.linesOfCode["good"] = (good / all) * 100;
+
+            return View(result);
         }
 
         public class Ugly
@@ -81,10 +142,11 @@ namespace CmVisualizer.Controllers
             return Json(new { });
         }
 
-        public IActionResult Result()
-        {
-            return View(new ResultViewModel());
-        }
+        //[HttpPost]
+        //public IActionResult Result(ResultViewModel result)
+        //{
+        //    return View(result);
+        //}
 
         public IActionResult Error()
         {

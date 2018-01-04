@@ -3,32 +3,22 @@
 <div class="card">
     <div class="card-header">
         <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#accordionCard_@Model.name.Replace(" ", "_")">
-            <div class="container">
-                <div class="row">
-                    <div class="col-1">
-                        @Model.name
-                    </div>
-                    <div class="col-11">
-                        <div class="progress">
-                            <div class="progress-bar bg-danger" style="width:33.33%">
-                                Bad
-                            </div>
-                            <div class="progress-bar bg-warning" style="width:33.33%">
-                                Mid
-                            </div>
-                            <div class="progress-bar bg-success" style="width:33.33%">
-                                Good
-                            </div>
-                        </div>
-                    </div>
+            <h1 class="text-center">@Model.name</h1>
+            <div class="progress">
+                <div class="progress-bar bg-danger" style="width:@Model.overall["bad"].ToString().Replace(",", ".")%">
+                    Bad
+                </div>
+                <div class="progress-bar bg-warning" style="width:@Model.overall["mid"].ToString().Replace(",", ".")%">
+                    Mid
+                </div>
+                <div class="progress-bar bg-success" style="width:@Model.overall["good"].ToString().Replace(",", ".")%">
+                    Good
                 </div>
             </div>
         </a>
     </div>
     <div id="accordionCard_@Model.name.Replace(" ", "_")" class="collapse show">
         <div class="card-body">
-            Nr of classes:
-            
             <div id="accordion_@Model.name.Replace(" ", "_")">
                 @await Html.PartialAsync("_ResultMetricsCardPartial", Model.maintainability,
                     new ViewDataDictionary(this.ViewData) { { "name", "accordion_" + Model.name.Replace(" ", "_") },

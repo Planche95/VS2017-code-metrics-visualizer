@@ -7,15 +7,10 @@ namespace CmVisualizer.ViewModels
 {
     public class ResultViewModel
     {
-        public int nrOfProjects;
-        public int nrOfNamespaces;
-        public int nrOfClasses;
-        public int nrOfFunctions;
-
-        public SingleResultViewModel solutionResult = new SingleResultViewModel() { name = "Solution" };
-        public SingleResultViewModel projectsResult = new SingleResultViewModel() { name = "Projects" };
-        public SingleResultViewModel namespacesResult = new SingleResultViewModel() { name = "Namespaces" };
-        public SingleResultViewModel classessResult = new SingleResultViewModel() { name = "Classes" };
-        public SingleResultViewModel functionsResult = new SingleResultViewModel() { name = "Functions" };
+        public SingleResultViewModel solutionResult;/* = new SingleResultViewModel() { name = "Solution" };*/
+        public SingleResultViewModel projectsResult; /*= new SingleResultViewModel() { name = "Projects" };*/
+        public SingleResultViewModel namespacesResult; /*= new SingleResultViewModel() { name = "Namespaces" };*/
+        public SingleResultViewModel classessResult; /*= new SingleResultViewModel() { name = "Classes" };*/
+        public SingleResultViewModel functionsResult; /*= new SingleResultViewModel() { name = "Functions" };*/
     }
 }

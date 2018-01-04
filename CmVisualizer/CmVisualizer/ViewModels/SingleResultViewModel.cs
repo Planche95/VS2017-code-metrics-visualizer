@@ -7,7 +7,7 @@ namespace CmVisualizer.ViewModels
 {
     public class SingleResultViewModel
     {
-        public string name;
+        public string name = "cosik";
 
         public Dictionary<string, double> overall = new Dictionary<string, double>()
         {
