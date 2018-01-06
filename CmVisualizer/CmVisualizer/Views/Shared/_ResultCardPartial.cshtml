@@ -1,8 +1,8 @@
 ﻿@model SingleResultViewModel
 
 <div class="card">
-    <div class="card-header">
-        <a class="card-link" data-toggle="collapse" data-parent="#accordion" href="#accordionCard_@Model.name.Replace(" ", "_")">
+    <div class="card-header" style="background-color:aliceblue">
+        <a class="card-link" data-toggle="collapse" href="#accordionCard_@Model.name.Replace(" ", "_")" aria-expanded="false">
             <h1 class="text-center">@Model.name</h1>
             <div class="progress">
                 <div class="progress-bar bg-danger" style="width:@Model.overall["bad"].ToString().Replace(",", ".")%">
@@ -17,8 +17,23 @@
             </div>
         </a>
     </div>
-    <div id="accordionCard_@Model.name.Replace(" ", "_")" class="collapse show">
+    <div id="accordionCard_@Model.name.Replace(" ", "_")" class="collapse">
         <div class="card-body">
+
+            <div class="container">
+                <div class="row text-center">
+                    <h4 class="col">
+                        Bad: @Model.overall["bad"]%
+                    </h4>
+                    <h4 class="col">
+                        Mid: @Model.overall["mid"]%
+                    </h4>
+                    <h4 class="col">
+                        Good: @Model.overall["good"]%
+                    </h4>
+                </div>
+            </div>
+            
             <div id="accordion_@Model.name.Replace(" ", "_")">
                 @await Html.PartialAsync("_ResultMetricsCardPartial", Model.maintainability,
                     new ViewDataDictionary(this.ViewData) { { "name", "accordion_" + Model.name.Replace(" ", "_") },

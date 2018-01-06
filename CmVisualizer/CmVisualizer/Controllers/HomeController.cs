@@ -51,73 +51,110 @@ namespace CmVisualizer.Controllers
             int[] settingsClass = (int[])TempData.Peek("Class");
             int[] settingsFunction = (int[])TempData.Peek("Function");
 
-            ResultViewModel result = new ResultViewModel();
-            float all, bad, mid, good;
+            ResultViewModel result = new ResultViewModel
+            {
+                projectsResult = CalculateMetrics("Projects", settingsProject,
+                solutionMetrics.ProjectsMetrics
+                                .Cast<MetricsData>()
+                                .ToList()),
 
-            result.solutionResult = new SingleResultViewModel() { name = "Solution" };
-            result.projectsResult = new SingleResultViewModel() { name = "Projects" };
-            result.namespacesResult = new SingleResultViewModel() { name = "Namespaces" };
-            result.classessResult = new SingleResultViewModel() { name = "Classes" };
-            result.functionsResult = new SingleResultViewModel() { name = "Functions" };
+                namespacesResult = CalculateMetrics("Namespaces", settingsNamespace,
+                solutionMetrics.ProjectsMetrics
+                                .SelectMany(pm => pm.NamespacesMetrics)
+                                .Cast<MetricsData>()
+                                .ToList()),
 
-            all = solutionMetrics.ProjectsMetrics.Count();
-            bad = solutionMetrics.ProjectsMetrics
-                .Where(pm => pm.Maintability < settingsProject[0])
-                .Count();
-            mid = solutionMetrics.ProjectsMetrics
-                .Where(pm => settingsProject[0] <= pm.Maintability && settingsProject[1] > pm.Maintability)
-                .Count();
-            good = solutionMetrics.ProjectsMetrics
-                .Where(pm => settingsProject[1] <= pm.Maintability)
-                .Count();
+                classessResult = CalculateMetrics("Classes", settingsClass,
+                solutionMetrics.ProjectsMetrics
+                                .SelectMany(pm => pm.NamespacesMetrics)
+                                .SelectMany(nm => nm.ClassesMetrics)
+                                .Cast<MetricsData>()
+                                .ToList()),
 
-            result.projectsResult.maintainability["bad"] = (bad / all) * 100;
-            result.projectsResult.maintainability["mid"] = (mid / all) * 100;
-            result.projectsResult.maintainability["good"] = (good / all) * 100;
-
-            good = solutionMetrics.ProjectsMetrics
-                .Where(pm => pm.Cyclomanic < settingsProject[2])
-                .Count();
-            mid = solutionMetrics.ProjectsMetrics
-                .Where(pm => settingsProject[2] <= pm.Cyclomanic && settingsProject[3] > pm.Cyclomanic)
-                .Count();
-            bad = solutionMetrics.ProjectsMetrics
-                .Where(pm => settingsProject[3] <= pm.Cyclomanic)
-                .Count();
-
-            result.projectsResult.cyclomaticComplexity["bad"] = (bad / all) * 100;
-            result.projectsResult.cyclomaticComplexity["mid"] = (mid / all) * 100;
-            result.projectsResult.cyclomaticComplexity["good"] = (good / all) * 100;
-
-            good = solutionMetrics.ProjectsMetrics
-                .Where(pm => pm.DephOfInheritance < settingsProject[4])
-                .Count();
-            mid = solutionMetrics.ProjectsMetrics
-                .Where(pm => settingsProject[4] <= pm.DephOfInheritance && settingsProject[5] > pm.DephOfInheritance)
-                .Count();
-            bad = solutionMetrics.ProjectsMetrics
-                .Where(pm => settingsProject[5] <= pm.DephOfInheritance)
-                .Count();
-
-            result.projectsResult.dephOfInheritance["bad"] = (bad / all) * 100;
-            result.projectsResult.dephOfInheritance["mid"] = (mid / all) * 100;
-            result.projectsResult.dephOfInheritance["good"] = (good / all) * 100;
-
-            good = solutionMetrics.ProjectsMetrics
-                .Where(pm => pm.LinesOfCode < settingsProject[6])
-                .Count();
-            mid = solutionMetrics.ProjectsMetrics
-                .Where(pm => settingsProject[6] <= pm.LinesOfCode && settingsProject[7] > pm.LinesOfCode)
-                .Count();
-            bad = solutionMetrics.ProjectsMetrics
-                .Where(pm => settingsProject[7] <= pm.LinesOfCode)
-                .Count();
-
-            result.projectsResult.linesOfCode["bad"] = (bad / all) * 100; ;
-            result.projectsResult.linesOfCode["mid"] = (mid / all) * 100; ;
-            result.projectsResult.linesOfCode["good"] = (good / all) * 100;
+                functionsResult = CalculateMetrics("Functions", settingsFunction,
+                solutionMetrics.ProjectsMetrics
+                                .SelectMany(pm => pm.NamespacesMetrics)
+                                .SelectMany(nm => nm.ClassesMetrics)
+                                .SelectMany(cm => cm.FunctionsMetrics)
+                                .Cast<MetricsData>()
+                                .ToList())
+            };
 
             return View(result);
+        }
+
+        private SingleResultViewModel CalculateMetrics(string name, int[] settings, List<MetricsData> metrics)
+        {
+            SingleResultViewModel result = new SingleResultViewModel() { name = name };
+
+            float all, bad, mid, good;
+
+            all = metrics.Count();
+            bad = metrics
+                .Where(pm => pm.Maintability < settings[0])
+                .Count();
+            mid = metrics
+                .Where(pm => settings[0] <= pm.Maintability && settings[1] > pm.Maintability)
+                .Count();
+            good = metrics
+                .Where(pm => settings[1] <= pm.Maintability)
+                .Count();
+
+            result.maintainability["bad"] = Math.Round((bad / all) * 100, 2);
+            result.maintainability["mid"] = Math.Round((mid / all) * 100, 2);
+            result.maintainability["good"] = Math.Round((good / all) * 100, 2);
+
+            good = metrics
+                .Where(pm => pm.Cyclomanic < settings[2])
+                .Count();
+            mid = metrics
+                .Where(pm => settings[2] <= pm.Cyclomanic && settings[3] > pm.Cyclomanic)
+                .Count();
+            bad = metrics
+                .Where(pm => settings[3] <= pm.Cyclomanic)
+                .Count();
+
+            result.cyclomaticComplexity["bad"] = Math.Round((bad / all) * 100, 2);
+            result.cyclomaticComplexity["mid"] = Math.Round((mid / all) * 100, 2);
+            result.cyclomaticComplexity["good"] = Math.Round((good / all) * 100, 2);
+
+            good = metrics
+                .Where(pm => pm.DephOfInheritance < settings[4])
+                .Count();
+            mid = metrics
+                .Where(pm => settings[4] <= pm.DephOfInheritance && settings[5] > pm.DephOfInheritance)
+                .Count();
+            bad = metrics
+                .Where(pm => settings[5] <= pm.DephOfInheritance)
+                .Count();
+
+            result.dephOfInheritance["bad"] = Math.Round((bad / all) * 100, 2);
+            result.dephOfInheritance["mid"] = Math.Round((mid / all) * 100, 2);
+            result.dephOfInheritance["good"] = Math.Round((good / all) * 100, 2);
+
+            good = metrics
+                .Where(pm => pm.LinesOfCode < settings[6])
+                .Count();
+            mid = metrics
+                .Where(pm => settings[6] <= pm.LinesOfCode && settings[7] > pm.LinesOfCode)
+                .Count();
+            bad = metrics
+                .Where(pm => settings[7] <= pm.LinesOfCode)
+                .Count();
+
+            result.linesOfCode["bad"] = Math.Round((bad / all) * 100, 2);
+            result.linesOfCode["mid"] = Math.Round((mid / all) * 100, 2);
+            result.linesOfCode["good"] = Math.Round((good / all) * 100, 2);
+
+            result.overall["bad"] = Math.Round((result.linesOfCode["bad"] + result.cyclomaticComplexity["bad"] +
+                                        result.maintainability["bad"] + result.dephOfInheritance["bad"])/4, 2);
+            result.overall["mid"] = Math.Round((result.linesOfCode["mid"] + result.cyclomaticComplexity["mid"] +
+                                        result.maintainability["mid"] + result.dephOfInheritance["mid"]) / 4, 2);
+            result.overall["good"] = Math.Round((result.linesOfCode["good"] + result.cyclomaticComplexity["good"] +
+                                        result.maintainability["good"] + result.dephOfInheritance["good"]) / 4, 2);
+
+
+            return result;
         }
 
         public class Ugly
