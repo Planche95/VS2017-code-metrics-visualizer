@@ -29,12 +29,21 @@ namespace CmVisualizer.ViewModels
             { "mid", 10.0 },
             { "good", 10.0 }
         };
+
         public Dictionary<string, double> dephOfInheritance = new Dictionary<string, double>()
         {
             { "bad", 15.0 },
             { "mid", 15.0 },
             { "good", 15.0 }
         };
+
+        public Dictionary<string, double> classCoupling = new Dictionary<string, double>()
+        {
+            { "bad", 15.0 },
+            { "mid", 15.0 },
+            { "good", 15.0 }
+        };
+
         public Dictionary<string, double> linesOfCode = new Dictionary<string, double>()
         {
             { "bad", 20.0 },

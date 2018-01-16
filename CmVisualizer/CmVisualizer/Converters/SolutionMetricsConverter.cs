@@ -28,10 +28,8 @@ namespace CmVisualizer.Converters
         {
             SolutionMetrics solutionMetrics = new SolutionMetrics();
 
-            if (value is IFormFile)
+            if (value is IFormFile file)
             {
-                IFormFile file = (IFormFile)value;
-
                 if (file.Length > 0)
                 {
                     using (var stream = new MemoryStream())
@@ -54,6 +52,7 @@ namespace CmVisualizer.Converters
                                     Maintability = (int)currentRow.GetCell((int)Column.MaintainabilityIndex).NumericCellValue,
                                     Cyclomanic = (int)currentRow.GetCell((int)Column.CyclomaticComplexity).NumericCellValue,
                                     DephOfInheritance = (int)currentRow.GetCell((int)Column.DepthOfInheritance).NumericCellValue,
+                                    ClassCoupling = (int)currentRow.GetCell((int)Column.ClassCoupling).NumericCellValue,
                                     LinesOfCode = (int)currentRow.GetCell((int)Column.LinesOfCode).NumericCellValue,
                                     Name = currentRow.GetCell((int)Column.Project).ToString()
                                 };
@@ -66,6 +65,7 @@ namespace CmVisualizer.Converters
                                         Maintability = (int)currentRow.GetCell((int)Column.MaintainabilityIndex).NumericCellValue,
                                         Cyclomanic = (int)currentRow.GetCell((int)Column.CyclomaticComplexity).NumericCellValue,
                                         DephOfInheritance = (int)currentRow.GetCell((int)Column.DepthOfInheritance).NumericCellValue,
+                                        ClassCoupling = (int)currentRow.GetCell((int)Column.ClassCoupling).NumericCellValue,
                                         LinesOfCode = (int)currentRow.GetCell((int)Column.LinesOfCode).NumericCellValue,
                                         Name = currentRow.GetCell((int)Column.NameSpace).ToString()
                                     };
@@ -78,6 +78,7 @@ namespace CmVisualizer.Converters
                                             Maintability = (int)currentRow.GetCell((int)Column.MaintainabilityIndex).NumericCellValue,
                                             Cyclomanic = (int)currentRow.GetCell((int)Column.CyclomaticComplexity).NumericCellValue,
                                             DephOfInheritance = (int)currentRow.GetCell((int)Column.DepthOfInheritance).NumericCellValue,
+                                            ClassCoupling = (int)currentRow.GetCell((int)Column.ClassCoupling).NumericCellValue,
                                             LinesOfCode = (int)currentRow.GetCell((int)Column.LinesOfCode).NumericCellValue,
                                             Name = currentRow.GetCell((int)Column.Type).ToString()
                                         };
@@ -89,6 +90,8 @@ namespace CmVisualizer.Converters
                                             {
                                                 Maintability = (int)currentRow.GetCell((int)Column.MaintainabilityIndex).NumericCellValue,
                                                 Cyclomanic = (int)currentRow.GetCell((int)Column.CyclomaticComplexity).NumericCellValue,
+                                                //DephOfInheritance = (int)currentRow.GetCell((int)Column.DepthOfInheritance).NumericCellValue,
+                                                ClassCoupling = (int)currentRow.GetCell((int)Column.ClassCoupling).NumericCellValue,
                                                 LinesOfCode = (int)currentRow.GetCell((int)Column.LinesOfCode).NumericCellValue,
                                                 Name = currentRow.GetCell((int)Column.Member).ToString()
                                             };

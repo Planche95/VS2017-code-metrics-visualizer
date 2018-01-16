@@ -52,7 +52,7 @@
                 <!-- Modal body -->
                 <div class="modal-body">
                     <div class="modal-block">
-                        <h5 class="modal-title">Maintability</h5>
+                        <h5 class="modal-title">Maintability index</h5>
                         <div id="maintability" class="progress">
                             <div class="progress-bar bg-danger" style="width:33.33%">
                                 Bad
@@ -106,7 +106,7 @@
                     </div>
 
                     <div class="modal-block">
-                        <h5 class="modal-title">Deph of inheritance</h5>
+                        <h5 class="modal-title">Class coupling</h5>
                         <div id="deph-of-inheritance" class="progress">
                             <div class="progress-bar bg-success" style="width:33.33%">
                                 Good
@@ -177,14 +177,17 @@
 @section scripts {
     <script>
         $(document).ready(function () {
+            //Click plus button => trigger input file
             $(".btn-file").click(function () {
                 $(".btn-input-file").trigger('click');
             });
 
+            //Open setting => change to first tab
             $("#btn-settings").click(function () {
                 $("#nav-project").trigger('click');
             });
 
+            //Upload file => submit file
             $(".btn-input-file").change(function () {
                 $('#project-form').submit();
             });

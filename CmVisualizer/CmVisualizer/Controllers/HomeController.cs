@@ -30,10 +30,10 @@ namespace CmVisualizer.Controllers
         {
             TempData["currentTab"] = "Project";
 
-            TempData["Project"] =  new int[] { 1, 2, 3, 4, 5, 6, 7, 8 };
-            TempData["Namespace"] = new int[] { 9, 10, 11, 12, 13, 14, 15, 16 };
-            TempData["Class"] = new int[] { 17, 18, 19, 20, 21, 22, 23, 24 };
-            TempData["Function"] = new int[] { 25, 26, 27, 28, 29, 30, 31, 32 };
+            TempData["Project"] =  new int[] { 50, 80, 300, 500, 300, 500, 1500, 3000};
+            TempData["Namespace"] = new int[] { 50, 80, 100, 150, 100, 150, 800, 1500 };
+            TempData["Class"] = new int[] { 50, 80, 20, 25, 30, 35, 20, 25 };
+            TempData["Function"] = new int[] { 50, 80, 10, 15, 20, 25, 10, 15 };
 
             return View();
         }
@@ -118,19 +118,33 @@ namespace CmVisualizer.Controllers
             result.cyclomaticComplexity["mid"] = Math.Round((mid / all) * 100, 2);
             result.cyclomaticComplexity["good"] = Math.Round((good / all) * 100, 2);
 
+            //good = metrics
+            //    .Where(pm => pm.DephOfInheritance < settings[4])
+            //    .Count();
+            //mid = metrics
+            //    .Where(pm => settings[4] <= pm.DephOfInheritance && settings[5] > pm.DephOfInheritance)
+            //    .Count();
+            //bad = metrics
+            //    .Where(pm => settings[5] <= pm.DephOfInheritance)
+            //    .Count();
+
+            //result.dephOfInheritance["bad"] = Math.Round((bad / all) * 100, 2);
+            //result.dephOfInheritance["mid"] = Math.Round((mid / all) * 100, 2);
+            //result.dephOfInheritance["good"] = Math.Round((good / all) * 100, 2);
+
             good = metrics
-                .Where(pm => pm.DephOfInheritance < settings[4])
+                .Where(pm => pm.ClassCoupling < settings[4])
                 .Count();
             mid = metrics
-                .Where(pm => settings[4] <= pm.DephOfInheritance && settings[5] > pm.DephOfInheritance)
+                .Where(pm => settings[4] <= pm.ClassCoupling && settings[5] > pm.ClassCoupling)
                 .Count();
             bad = metrics
-                .Where(pm => settings[5] <= pm.DephOfInheritance)
+                .Where(pm => settings[5] <= pm.ClassCoupling)
                 .Count();
 
-            result.dephOfInheritance["bad"] = Math.Round((bad / all) * 100, 2);
-            result.dephOfInheritance["mid"] = Math.Round((mid / all) * 100, 2);
-            result.dephOfInheritance["good"] = Math.Round((good / all) * 100, 2);
+            result.classCoupling["bad"] = Math.Round((bad / all) * 100, 2);
+            result.classCoupling["mid"] = Math.Round((mid / all) * 100, 2);
+            result.classCoupling["good"] = Math.Round((good / all) * 100, 2);
 
             good = metrics
                 .Where(pm => pm.LinesOfCode < settings[6])
@@ -147,11 +161,11 @@ namespace CmVisualizer.Controllers
             result.linesOfCode["good"] = Math.Round((good / all) * 100, 2);
 
             result.overall["bad"] = Math.Round((result.linesOfCode["bad"] + result.cyclomaticComplexity["bad"] +
-                                        result.maintainability["bad"] + result.dephOfInheritance["bad"])/4, 2);
+                                        result.maintainability["bad"] + result.classCoupling["bad"])/4, 2);
             result.overall["mid"] = Math.Round((result.linesOfCode["mid"] + result.cyclomaticComplexity["mid"] +
-                                        result.maintainability["mid"] + result.dephOfInheritance["mid"]) / 4, 2);
+                                        result.maintainability["mid"] + result.classCoupling["mid"]) / 4, 2);
             result.overall["good"] = Math.Round((result.linesOfCode["good"] + result.cyclomaticComplexity["good"] +
-                                        result.maintainability["good"] + result.dephOfInheritance["good"]) / 4, 2);
+                                        result.maintainability["good"] + result.classCoupling["good"]) / 4, 2);
 
 
             return result;
@@ -178,12 +192,6 @@ namespace CmVisualizer.Controllers
 
             return Json(new { });
         }
-
-        //[HttpPost]
-        //public IActionResult Result(ResultViewModel result)
-        //{
-        //    return View(result);
-        //}
 
         public IActionResult Error()
         {

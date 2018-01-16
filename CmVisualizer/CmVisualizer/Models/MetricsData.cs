@@ -10,6 +10,7 @@ namespace CmVisualizer.Models
         protected int maintability;
         protected int cyclomanic;
         protected int dephOfInheritance;
+        protected int classCoupling;
         protected int linesOfCode;
         protected string name;
 
@@ -29,6 +30,12 @@ namespace CmVisualizer.Models
         {
             get { return dephOfInheritance; }
             set { dephOfInheritance = value; }
+        }
+
+        public int ClassCoupling
+        {
+            get { return classCoupling; }
+            set { classCoupling = value; }
         }
 
         public int LinesOfCode

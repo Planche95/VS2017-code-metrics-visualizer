@@ -41,9 +41,9 @@
                 @await Html.PartialAsync("_ResultMetricsCardPartial", Model.cyclomaticComplexity,
                     new ViewDataDictionary(this.ViewData) { { "name", "accordion_" + Model.name.Replace(" ", "_") },
                                                             { "header", "Cyclomatic complexity" } })
-                @await Html.PartialAsync("_ResultMetricsCardPartial", Model.dephOfInheritance,
+                @await Html.PartialAsync("_ResultMetricsCardPartial", Model.classCoupling,
                     new ViewDataDictionary(this.ViewData) { { "name", "accordion_" + Model.name.Replace(" ", "_") },
-                                                            { "header", "Deph of inheritance" } })
+                                                            { "header", "Class coupling" } })
                 @await Html.PartialAsync("_ResultMetricsCardPartial", Model.linesOfCode,
                     new ViewDataDictionary(this.ViewData) { { "name", "accordion_" + Model.name.Replace(" ", "_") },
                                                             { "header", "Lines of code" } })
